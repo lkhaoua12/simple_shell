@@ -4,22 +4,24 @@ char *path_finder(char *command)
 {
 	char *full_path;
 	char *path = getenv("PATH");
-	char *path_copy = strdup(path);
+	char *path_copy;
 	char *token;
 	char *state;
 
-	if (path == NULL)
-	{
-		free(path_copy);
-		return (NULL);
-	}
+	if (path)
+		path_copy = strdup(path);
 	if (access(command, X_OK) == 0)
 	{
 		full_path = strdup(command);
-		free(path_copy);
+		if (path)
+			free(path_copy);
 		return (full_path);
 	}
 
+	if (path == NULL)
+	{
+		return (NULL);
+	}
 
 	token = strtok_custom(path_copy, ":", &state);
 
