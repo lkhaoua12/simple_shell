@@ -81,5 +81,6 @@ int main(int argc, char **argv, char **envp)
 			command_count++;
 		}
 	}
+	free(input);
 	return (exit_status);
 }
