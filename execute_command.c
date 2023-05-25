@@ -37,12 +37,17 @@ void execute_command(char **command_args, char *program_name,
         	}
 		else 
 		{
-            		if (WIFEXITED(status))
+			if (WEXITSTATUS(status))
 			{
-                		/* Child process exited normally */
-                		*exit_status = WEXITSTATUS(status);
-                		/* Use the exit_status as needed */
+				/* child procces exited */
+				*exit_status = WEXITSTATUS(status);
+			}
+			else if (WIFEXITED(status))
+			{
+                		/* Child process return normally */
+                		*exit_status = WTERMSIG(status);
             		}
+
         	}
     	}
 }
