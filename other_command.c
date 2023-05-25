@@ -1,6 +1,6 @@
 #include "shell.h"
 
-void (*other_command(char **args_list))(char **, int *)
+void (*other_command(char **args_list))(char **, int *, int)
 {
 	int i; 
 
