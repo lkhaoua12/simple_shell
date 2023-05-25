@@ -6,7 +6,7 @@ char *path_finder(char *command)
 	char *path = getenv("PATH");
 	char *path_copy = strdup(path);
 	char *token;
-	char *state = strdup(path_copy);
+	char *state;
 
 	if (path == NULL)
 	{
