@@ -10,6 +10,7 @@
 void execute_command(char **command_args, char *program_name,
 	char *full_path, int command_count, char *envp[], int *exit_status)
 {
+	int status;
 	pid_t child_pid = fork();
 	char error_message[100];
 
@@ -22,16 +23,26 @@ void execute_command(char **command_args, char *program_name,
 			snprintf(error_message, sizeof(error_message), "ls: cannot access '%s': %s",
 	    			command_args[0], strerror(errno));
 			perror(error_message);
-			*exit_status = 127;
 		}
-	}
-	else if (child_pid > 0)
-	{
-		wait(NULL);
-		*exit_status = 0;
 	}
 	else
 	{
-		fprintf(stderr, "Fork failed.\n");
-	}
+        	/* Parent process */
+        	pid_t terminated_pid = waitpid(child_pid, &status, 0);
+        	if (terminated_pid == -1)
+		{
+			/* Error occurred while waiting */
+            		perror("waitpid");
+            		exit(1);
+        	}
+		else 
+		{
+            		if (WIFEXITED(status))
+			{
+                		/* Child process exited normally */
+                		*exit_status = WEXITSTATUS(status);
+                		/* Use the exit_status as needed */
+            		}
+        	}
+    	}
 }

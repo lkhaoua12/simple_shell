@@ -7,7 +7,7 @@ int main(int argc, char **argv, char **envp)
 	size_t input_length;
 	int bytes_read;
 	int command_count = 1, exit_status = 0, args_num;
-	void (*handler)(char **);
+	void (*handler)(char **, int *);
 	(void)argc;
 	while (1)
 	{
@@ -61,7 +61,7 @@ int main(int argc, char **argv, char **envp)
 			handler = other_command(args_list);
 			if (handler != NULL)
 			{
-				handler(args_list);
+				handler(args_list, &exit_status);
 			}
 			else
 			{
