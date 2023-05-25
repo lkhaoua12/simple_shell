@@ -7,7 +7,7 @@ int main(int argc, char **argv, char **envp)
 	size_t input_length;
 	int bytes_read;
 	int command_count = 1, exit_status = 0, args_num;
-
+	void (*handler)(char **);
 	(void)argc;
 	while (1)
 	{
@@ -29,7 +29,7 @@ int main(int argc, char **argv, char **envp)
 			}
 			else
 			{
-				perror("Error: ");
+				printf("hoal\n");
 				free(input);
 				command_count++;
 				exit_status = 127;
@@ -58,12 +58,20 @@ int main(int argc, char **argv, char **envp)
 		full_path = path_finder(args_list[0]);
 		if (full_path == NULL)
 		{
-			fprintf(stderr, "%s: %d: %s: not found\n", argv[0],
+			handler = other_command(args_list);
+			if (handler != NULL)
+			{
+				handler(args_list);
+			}
+			else
+			{
+				fprintf(stderr, "%s: %d: %s: not found\n", argv[0],
 				command_count, args_list[0]);
-			free_command_args(args_list);
-			exit_status = 127;
-			command_count++;
-			continue;
+				free_command_args(args_list);
+				exit_status = 127;
+				command_count++;
+				continue;
+			}
 		}
 		else
 		{
