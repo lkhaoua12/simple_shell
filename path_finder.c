@@ -11,6 +11,13 @@ char *path_finder(char *command)
 		free(path_copy);
 		return NULL;
 	}
+	if (access(command, X_OK) == 0)
+	{
+		full_path = strdup(command);
+		free(path_copy);
+		return full_path;
+	}
+
 
 	token = strtok(path_copy, ":");
 
