@@ -36,19 +36,19 @@ int main(int argc, char **argv, char **envp)
 				continue;
 			}	
 		}
-		if (*input == '\n')
-		{
-			free(input);
-			input = NULL;
-			continue;
-		}
+		if (*input == '\n' || *strtrim(input) == '\0')
+            	{
+                	free(input);
+                	input = NULL;
+                	continue;
+            	}
 		/* get rid of the new line at the end*/
 		if (input[strlen(input) - 1] == '\n')
 			input[strlen(input) - 1] = '\0';
 		args_list = split_string(input, " ", &args_num);
 		free(input);
 		input = NULL;
-		if (args_list == NULL)
+		if (args_list == NULL || *args_list[0] == '\0')
 		{
 			exit_status = 127;
 			command_count++;

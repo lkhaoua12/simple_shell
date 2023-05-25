@@ -7,6 +7,8 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <errno.h>
+#include <ctype.h>
+
 typedef struct hl{
 	char *command;
 	void (*handler)(char **args_list);
@@ -20,6 +22,7 @@ void handle_noninteractive_mode(char *program_name, char *envp[]);
 char *strtok_custom(char *str, const char *delim, char **state);
 void handle_exit(char **args_list);
 void (*other_command(char **args_list))(char **);
+char *strtrim(char *str);
 
 
 #endif
