@@ -36,6 +36,12 @@ int main(int argc, char **argv, char **envp)
 				continue;
 			}	
 		}
+		if (*input == '\n')
+		{
+			free(input);
+			input = NULL;
+			continue;
+		}
 		/* get rid of the new line at the end*/
 		if (input[strlen(input) - 1] == '\n')
 			input[strlen(input) - 1] = '\0';
