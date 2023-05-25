@@ -11,7 +11,7 @@ void execute_command(char **command_args, char *program_name,
 	char *full_path, int command_count, char *envp[], int *exit_status)
 {
 	int status;
-	pid_t child_pid = fork();
+	pid_t child_pid = fork(), terminated_pid;
 	char error_message[100];
 
 	(void)program_name;
@@ -21,21 +21,21 @@ void execute_command(char **command_args, char *program_name,
 		if (execve(full_path, command_args, envp) == -1)
 		{
 			snprintf(error_message, sizeof(error_message), "ls: cannot access '%s': %s",
-	    			command_args[0], strerror(errno));
+				command_args[0], strerror(errno));
 			perror(error_message);
 		}
 	}
 	else
 	{
-        	/* Parent process */
-        	pid_t terminated_pid = waitpid(child_pid, &status, 0);
-        	if (terminated_pid == -1)
+		/* Parent process */
+		terminated_pid = waitpid(child_pid, &status, 0);
+		if (terminated_pid == -1)
 		{
 			/* Error occurred while waiting */
-            		perror("waitpid");
-            		exit(1);
-        	}
-		else 
+			perror("waitpid");
+			exit(1);
+		}
+		else
 		{
 			if (WEXITSTATUS(status))
 			{
@@ -44,10 +44,9 @@ void execute_command(char **command_args, char *program_name,
 			}
 			else if (WIFEXITED(status))
 			{
-                		/* Child process return normally */
-                		*exit_status = WTERMSIG(status);
-            		}
-
-        	}
-    	}
+				/* Child process return normally */
+				*exit_status = WTERMSIG(status);
+			}
+		}
+	}
 }

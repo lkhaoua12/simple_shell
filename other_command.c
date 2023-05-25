@@ -2,7 +2,7 @@
 
 void (*other_command(char **args_list))(char **, int *, int)
 {
-	int i; 
+	int i;
 
 	handle_command handle[] = {
 		{"exit", handle_exit},

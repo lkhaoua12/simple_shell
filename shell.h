@@ -23,6 +23,7 @@ char *strtok_custom(char *str, const char *delim, char **state);
 void handle_exit(char **args_list, int *exit_status, int command_count);
 void (*other_command(char **args_list))(char **, int *, int);
 char *strtrim(char *str);
+void trimString(char *str);
 
 
 #endif
