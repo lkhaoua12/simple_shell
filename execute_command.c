@@ -8,7 +8,7 @@
  * Return: None.
  */
 void execute_command(char **command_args, char *program_name,
-		int command_count, char *envp[], int *exit_status)
+	char *full_path, int command_count, char *envp[], int *exit_status)
 {
 	pid_t child_pid = fork();
 	char error_message[100];
@@ -17,7 +17,7 @@ void execute_command(char **command_args, char *program_name,
 	(void)command_count;
 	if (child_pid == 0)
 	{
-		if (execve(command_args[0], command_args, envp) == -1)
+		if (execve(full_path, command_args, envp) == -1)
 		{
 			snprintf(error_message, sizeof(error_message), "ls: cannot access '%s': %s",
 	    			command_args[0], strerror(errno));

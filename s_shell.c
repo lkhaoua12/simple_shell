@@ -3,7 +3,7 @@
 
 int main(int argc, char **argv, char **envp)
 {
-	char **args_list = NULL, *input = NULL, *tmp, *full_path;
+	char **args_list = NULL, *input = NULL, *full_path;
 	size_t input_length;
 	int bytes_read;
 	int command_count = 1, exit_status = 0, args_num;
@@ -29,7 +29,7 @@ int main(int argc, char **argv, char **envp)
 			}
 			else
 			{
-				printf("hoal\n");
+				perror("");
 				free(input);
 				command_count++;
 				exit_status = 127;
@@ -75,10 +75,8 @@ int main(int argc, char **argv, char **envp)
 		}
 		else
 		{
-			tmp = args_list[0];
-			args_list[0] = full_path;
-			free(tmp);
-			execute_command(args_list, argv[0], command_count, envp, &exit_status);
+			execute_command(args_list, argv[0], full_path, command_count, envp, &exit_status);
+			free(full_path);
 			free_command_args(args_list);
 			command_count++;
 		}
