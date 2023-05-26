@@ -11,6 +11,7 @@ void print_prompt(void)
 }
 /**
  * read_input - Reads the input from the user and returns the input string.
+ * @end_of_file: int to store if end_of_file reached.
  * Return: The input string entered by the user.
  */
 char *read_input(int *end_of_file)
@@ -28,14 +29,12 @@ char *read_input(int *end_of_file)
 		{
 			if (isatty(fileno(stdin)))
 				printf("\n");
-			free(input);
 			*end_of_file = 1;
 			return (NULL);
 		}
 		else
 		{
 			perror("");
-			free(input);
 			return (NULL);
 		}
 	}
@@ -44,6 +43,10 @@ char *read_input(int *end_of_file)
 		input[strlen(input) - 1] = '\0';
 
 	input = strtrim(input);
+	if (*input == '\0')
+	{
+		return (NULL);
+	}
 	return (input);
 }
 /**
@@ -96,7 +99,7 @@ int main(int argc, char **argv, char **envp)
 	char **args_list = NULL;
 	int command_count = 1, exit_status = 0, args_num;
 	int end_of_file = 0;
-	char *input;
+	char *input = NULL;
 
 	(void)argc;
 	while (1)
@@ -105,7 +108,7 @@ int main(int argc, char **argv, char **envp)
 		print_prompt();
 
 		input = read_input(&end_of_file);
-		if (input == NULL || *input == '\0')
+		if (input == NULL)
 		{
 			if (end_of_file)
 				break;
@@ -113,7 +116,6 @@ int main(int argc, char **argv, char **envp)
 		}
 		args_list = split_string(input, " ", &args_num);
 		free(input);
-
 		if (args_list == NULL || *args_list[0] == '\0')
 		{
 			exit_status = 127;
@@ -124,6 +126,5 @@ int main(int argc, char **argv, char **envp)
 		command_handler(args_list, &exit_status, command_count, envp, argv[0]);
 		command_count++;
 	}
-	free_command_args(args_list);
 	return (exit_status);
 }
