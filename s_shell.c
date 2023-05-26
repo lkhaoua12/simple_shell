@@ -13,7 +13,7 @@ void print_prompt(void)
  * read_input - Reads the input from the user and returns the input string.
  * Return: The input string entered by the user.
  */
-char *read_input(void)
+char *read_input(int *end_of_file)
 {
 	char *input = NULL;
 	size_t input_length;
@@ -29,6 +29,7 @@ char *read_input(void)
 			if (isatty(fileno(stdin)))
 				printf("\n");
 			free(input);
+			*end_of_file = 1;
 			return (NULL);
 		}
 		else
@@ -38,17 +39,11 @@ char *read_input(void)
 			return (NULL);
 		}
 	}
-	input = strtrim(input);
-	if (*input == '\n' || *input == '\0')
-	{
-		free(input);
-		return (NULL);
-	}
-
 	/* get rid of the new line at the end */
 	if (input[strlen(input) - 1] == '\n')
 		input[strlen(input) - 1] = '\0';
 
+	input = strtrim(input);
 	return (input);
 }
 /**
@@ -100,6 +95,7 @@ int main(int argc, char **argv, char **envp)
 {
 	char **args_list = NULL;
 	int command_count = 1, exit_status = 0, args_num;
+	int end_of_file = 0;
 	char *input;
 
 	(void)argc;
@@ -108,10 +104,13 @@ int main(int argc, char **argv, char **envp)
 		fflush(stdout);
 		print_prompt();
 
-		input = read_input();
-		if (input == NULL)
+		input = read_input(&end_of_file);
+		if (input == NULL || *input == '\0')
+		{
+			if (end_of_file)
+				break;
 			continue;
-
+		}
 		args_list = split_string(input, " ", &args_num);
 		free(input);
 
