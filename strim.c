@@ -7,20 +7,21 @@
  */
 char *strtrim(char *str)
 {
-	char *end;
+	char *start = str;
+	char *end = str + strlen(str) - 1;
 
-	while (isspace(*str))
-		str++;
-	if (*str == '\0')
-		return (str);
+	if (str == NULL)
+		return (NULL);
 
+	start = str;
 	end = str + strlen(str) - 1;
-	while (end > str && isspace(*end))
+
+	while (isspace(*start))
+		start++;
+
+	while (end > start && isspace(*end))
 		end--;
 
 	*(end + 1) = '\0';
-
-	if (*str == '\0')
-		return (NULL);
-	return (str);
+	return (start);
 }
