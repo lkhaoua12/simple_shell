@@ -20,5 +20,7 @@ char *strtrim(char *str)
 
 	*(end + 1) = '\0';
 
+	if (*str == '\0')
+		return (NULL);
 	return (str);
 }

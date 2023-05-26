@@ -21,7 +21,6 @@ char *read_input(int *end_of_file)
 	int bytes_read;
 
 	bytes_read = getline(&input, &input_length, stdin);
-
 	if (bytes_read == -1)
 	{
 		/* check if end of file reached */
@@ -30,23 +29,20 @@ char *read_input(int *end_of_file)
 			if (isatty(fileno(stdin)))
 				printf("\n");
 			*end_of_file = 1;
-			return (NULL);
+			input = NULL;
+			return (input);
 		}
 		else
 		{
 			perror("");
-			return (NULL);
+			input = NULL;
+			return (input);
 		}
 	}
 	/* get rid of the new line at the end */
 	if (input[strlen(input) - 1] == '\n')
 		input[strlen(input) - 1] = '\0';
 
-	input = strtrim(input);
-	if (*input == '\0')
-	{
-		return (NULL);
-	}
 	return (input);
 }
 /**
@@ -108,11 +104,9 @@ int main(int argc, char **argv, char **envp)
 		print_prompt();
 
 		input = read_input(&end_of_file);
-		if (input == NULL)
+		if (end_of_file)
 		{
-			if (end_of_file)
-				break;
-			continue;
+			break;
 		}
 		args_list = split_string(input, " ", &args_num);
 		free(input);
