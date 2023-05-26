@@ -1,5 +1,10 @@
 #include "shell.h"
-
+/**
+ * strtrim - Trims leading and trailing whitespace from a string.
+ * @str: The input string to be trimmed.
+ *
+ * Return: A pointer to the trimmed string.
+ */
 char *strtrim(char *str)
 {
 	char *end;

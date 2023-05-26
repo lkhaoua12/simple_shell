@@ -3,8 +3,10 @@
  * execute_command - Executes a command with the given arguments.
  * @command_args: An array of strings.
  * @program_name: The name of the program executing the command.
+ * @full_path: string with the full_path of the exe.
  * @command_count: The count of the command being executed.
  * @envp: An array of strings representing the environment variables.
+ * @exit_status: int that hold the child exit_status.
  * Return: None.
  */
 void execute_command(char **command_args, char *program_name,

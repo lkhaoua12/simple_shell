@@ -1,13 +1,16 @@
 #include "shell.h"
-
-char *path_finder(char *command)
+/**
+ * path_finder - Finds the full path of a command.
+ * @command: The command to find the full path for.
+ * @envp: The environment variables.
+ * Return: A pointer to the full path of the command.
+ */
+char *path_finder(char *command, char **envp)
 {
-	char *full_path;
-	char *path = getenv("PATH");
-	char *path_copy;
-	char *token;
-	char *state;
+	char *full_path, *path = NULL, *path_copy, *token, *state;
 
+	(void)envp;
+	path = getenv("PATH");
 	if (path)
 		path_copy = strdup(path);
 	if (access(command, X_OK) == 0)
@@ -17,14 +20,11 @@ char *path_finder(char *command)
 			free(path_copy);
 		return (full_path);
 	}
-
 	if (path == NULL)
 	{
 		return (NULL);
 	}
-
 	token = strtok_custom(path_copy, ":", &state);
-
 	while (token != NULL)
 	{
 		full_path = malloc(strlen(token) + strlen(command) + 2);

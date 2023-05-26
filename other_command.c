@@ -1,5 +1,10 @@
 #include "shell.h"
-
+/**
+ * other_command - Finds and returns the appropriate handler.
+ * @args_list: The list of command arguments.
+ *
+ * Return: A pointer to the appropriate handler function.
+ */
 void (*other_command(char **args_list))(char **, int *, int)
 {
 	int i;

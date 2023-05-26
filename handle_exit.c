@@ -1,5 +1,10 @@
 #include "shell.h"
-
+/**
+ * handle_exit - Handles the "exit" command.
+ * @args_list: The list of command arguments.
+ * @exit_status: Pointer to the exit status.
+ * @command_count: The count of commands executed.
+ */
 void handle_exit(char **args_list, int *exit_status, int command_count)
 {
 	if (args_list[1])

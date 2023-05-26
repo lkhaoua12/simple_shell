@@ -3,6 +3,7 @@
  * strtok_custom - Custom implementation of strtok function.
  * @str: The string to be tokenized.
  * @delim: The delimiter used to tokenize the string.
+ * @state: pointer to char pointer.
  *
  * Return: Pointer to the next token.
  */
