@@ -36,11 +36,6 @@ char *read_input(void)
 		}
 	}
 
-	if (*input == '\n' || *strtrim(input) == '\0')
-	{
-		free(input);
-		return (NULL);
-	}
 
 	if (input[strlen(input) - 1] == '\n')
 		input[strlen(input) - 1] = '\0';
