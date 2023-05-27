@@ -11,10 +11,10 @@ void print_prompt(void)
 	}
 }
 /**
- * read_input - Reads input from stdin.
- * Return: The input string, or NULL on failure or EOF.
+ * trim - remove trailing and leading spaces.
+ * @str: string to be trimed.
+ * Return: pointer to new str.
  */
-
 char *trim(const char *str)
 {
 	size_t trimmed_len;
@@ -32,15 +32,19 @@ char *trim(const char *str)
 	trimmed_str = malloc(trimmed_len + 1);
 
 	if (trimmed_str == NULL)
-		return NULL;
+		return (NULL);
 
 	strncpy(trimmed_str, str + start, trimmed_len);
 	trimmed_str[trimmed_len] = '\0';
-	return trimmed_str;
+	return (trimmed_str);
 }
+/**
+ * read_input - Reads input from stdin.
+ * Return: The input string, or NULL on failure or EOF.
+ */
 char *read_input(void)
 {
-	char *trimmed_input; 
+	char *trimmed_input;
 	char *input = NULL;
 	size_t input_length = 0;
 	ssize_t bytes_read = getline(&input, &input_length, stdin);
@@ -64,13 +68,13 @@ char *read_input(void)
 
 	if (input[strlen(input) - 1] == '\n')
 		input[strlen(input) - 1] = '\0';
-	
+
 	if (input[0] == '\0')
-		return input;
-	trimmed_input = trim(input); 
+		return (input);
+	trimmed_input = trim(input);
 	free(input);
 
-	return trimmed_input;
+	return (trimmed_input);
 }
 
 /**
