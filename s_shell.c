@@ -122,6 +122,6 @@ int main(int argc, char **argv, char **envp)
 		command_count++;
 	}
 
-	free(input);
+	/* free(input) */;
 	return (exit_status);
 }
