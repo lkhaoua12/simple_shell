@@ -7,10 +7,8 @@
  */
 char *path_finder(char *command)
 {
-	char *path = getenv("PATH");
-	char *path_cp;
+	char *path = getenv("PATH"), *path_cp, **path_list;
 	char full_path[100];
-	char **path_list;
 	struct stat st;
 	int i, path_found = 0, path_num;
 
@@ -43,13 +41,10 @@ char *path_finder(char *command)
 			strcat(full_path, "/");
 			strcat(full_path, command);
 			if (stat(full_path, &st) == 0 && S_ISREG(st.st_mode))
-			{
 				path_found = 1;
-			}
 		}
-		free(path_list[i]);
 	}
-	free(path_list);
+	free_command_args(path_list);
 	free(path_cp);
 	return (path_found ? strdup(full_path) : NULL);
 }
