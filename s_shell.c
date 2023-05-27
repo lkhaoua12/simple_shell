@@ -17,27 +17,26 @@ void print_prompt(void)
 
 char *trim(const char *str)
 {
-    size_t trimmed_len;
-    char *trimmed_str;
-    size_t len = strlen(str);
-    size_t start = 0;
-    size_t end = len - 1;
+	size_t trimmed_len;
+	char *trimmed_str;
+	size_t len = strlen(str), start = 0, end = len - 1;
 
-    while (start < len && isspace(str[start]))
-        start++;
+	while (start < len && isspace(str[start]))
+		start++;
 
-    while (end > start && isspace(str[end]))
-        end--;
+	while (end > start && isspace(str[end]))
+		end--;
 
-    trimmed_len = end - start + 1;
-    trimmed_str = malloc(trimmed_len + 1);
-    if (trimmed_str == NULL)
-        return NULL;
+	trimmed_len = end - start + 1;
 
-    strncpy(trimmed_str, str + start, trimmed_len);
-    trimmed_str[trimmed_len] = '\0';
+	trimmed_str = malloc(trimmed_len + 1);
 
-    return trimmed_str;
+	if (trimmed_str == NULL)
+		return NULL;
+
+	strncpy(trimmed_str, str + start, trimmed_len);
+	trimmed_str[trimmed_len] = '\0';
+	return trimmed_str;
 }
 char *read_input(void)
 {
@@ -52,6 +51,7 @@ char *read_input(void)
 		{
 			if (isatty(fileno(stdin)))
 				printf("\n");
+			free(input);
 			return (NULL);
 		}
 		else
@@ -65,6 +65,8 @@ char *read_input(void)
 	if (input[strlen(input) - 1] == '\n')
 		input[strlen(input) - 1] = '\0';
 	
+	if (input[0] == '\0')
+		return input;
 	trimmed_input = trim(input); 
 	free(input);
 
@@ -91,6 +93,7 @@ void command_handler(char **args_list, int *exit_status,
 		if (handler != NULL)
 		{
 			handler(args_list, exit_status, command_count);
+			free_command_args(args_list);
 		}
 		else
 		{
@@ -137,6 +140,7 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		}
 		args_list = split_string(input, " ", &args_num);
+		free(input);
 		if (args_list == NULL)
 		{
 			exit_status = 127;
@@ -146,7 +150,5 @@ int main(int argc, char **argv, char **envp)
 		command_handler(args_list, &exit_status, command_count, argv, envp);
 		command_count++;
 	}
-
-	free(input);
 	return (exit_status);
 }
