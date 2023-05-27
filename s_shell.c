@@ -14,8 +14,34 @@ void print_prompt(void)
  * read_input - Reads input from stdin.
  * Return: The input string, or NULL on failure or EOF.
  */
+
+char *trim(const char *str)
+{
+    size_t trimmed_len;
+    char *trimmed_str;
+    size_t len = strlen(str);
+    size_t start = 0;
+    size_t end = len - 1;
+
+    while (start < len && isspace(str[start]))
+        start++;
+
+    while (end > start && isspace(str[end]))
+        end--;
+
+    trimmed_len = end - start + 1;
+    trimmed_str = malloc(trimmed_len + 1);
+    if (trimmed_str == NULL)
+        return NULL;
+
+    strncpy(trimmed_str, str + start, trimmed_len);
+    trimmed_str[trimmed_len] = '\0';
+
+    return trimmed_str;
+}
 char *read_input(void)
 {
+	char *trimmed_input; 
 	char *input = NULL;
 	size_t input_length = 0;
 	ssize_t bytes_read = getline(&input, &input_length, stdin);
@@ -36,12 +62,13 @@ char *read_input(void)
 		}
 	}
 
-
 	if (input[strlen(input) - 1] == '\n')
 		input[strlen(input) - 1] = '\0';
+	
+	trimmed_input = trim(input); 
+	free(input);
 
-	trimString(input);
-	return (input);
+	return trimmed_input;
 }
 
 /**
@@ -104,10 +131,13 @@ int main(int argc, char **argv, char **envp)
 		{
 			break;
 		}
+		if (*input == '\0')
+		{
+			free(input);
+			continue;
+		}
 		args_list = split_string(input, " ", &args_num);
-		free(input);
-		input = NULL;
-		if (args_list == NULL || *args_list[0] == '\0')
+		if (args_list == NULL)
 		{
 			exit_status = 127;
 			command_count++;
@@ -117,6 +147,6 @@ int main(int argc, char **argv, char **envp)
 		command_count++;
 	}
 
-	/* free(input) */;
+	free(input);
 	return (exit_status);
 }
