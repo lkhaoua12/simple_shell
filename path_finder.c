@@ -24,9 +24,11 @@ char *path_finder(char *command)
 	if (stat(command, &st) == 0)
 	{
 		if (path)
-		free(path_cp);
+			free(path_cp);
 		return (strdup(command));
 	}
+	if (!path)
+		return (NULL);
 	path_list = split_string(path_cp, ":", &path_num);
 	if (path_list == NULL)
 	{
