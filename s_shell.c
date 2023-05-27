@@ -45,6 +45,7 @@ int main(int argc, char **argv, char **envp)
 		/* get rid of the new line at the end*/
 		if (input[strlen(input) - 1] == '\n')
 			input[strlen(input) - 1] = '\0';
+		trimString(input);
 		args_list = split_string(input, " ", &args_num);
 		free(input);
 		input = NULL;
@@ -55,7 +56,7 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		}	
 		/* find the full path of the command */
-		full_path = path_finder(args_list[0], envp);
+		full_path = path_finder(args_list[0]);
 		if (full_path == NULL)
 		{
 			handler = other_command(args_list);

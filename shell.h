@@ -19,9 +19,11 @@ typedef struct hl
 	void (*handler)(char **args_list, int *exit_status, int command_count);
 } handle_command;
 char **split_string(char *str, char *delim, int *words_num);
-char *path_finder(char *command, char **envp);
+char *path_finder(char *command);
 void execute_command(char **command_args, char *program_name,
 		char *full_path, int command_count, char *envp[], int *exit_status);
+
+void trimString(char *str);
 void free_command_args(char **command_args);
 void handle_noninteractive_mode(char *program_name, char *envp[]);
 char *strtok_custom(char *str, const char *delim, char **state);
