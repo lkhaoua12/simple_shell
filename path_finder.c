@@ -8,12 +8,14 @@
 char *path_finder(char *command)
 {
 	char *path = getenv("PATH");
-	char *path_cp = strdup(path);
+	char *path_cp;
 	char full_path[100];
 	char **path_list;
 	struct stat st;
 	int i, path_found = 0, path_num;
 
+	if (path)
+		path_cp = strdup(path);
 	if (command == NULL)
 	{
 		free(path_cp);
@@ -21,6 +23,7 @@ char *path_finder(char *command)
 	}
 	if (stat(command, &st) == 0)
 	{
+		if (path)
 		free(path_cp);
 		return (strdup(command));
 	}
